@@ -11,7 +11,7 @@ state(['password' => '']);
 rules(['password' => ['required', 'string', 'current_password']]);
 
 $deleteUser = function (Logout $logout) {
-    $this->validate();
+    // $this->validate();
 
     tap(Auth::user(), $logout(...))->delete();
 
@@ -20,23 +20,25 @@ $deleteUser = function (Logout $logout) {
 
 ?>
 
-<section class="space-y-6">
+<section class="space-y-6 container">
     <header>
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Delete Account') }}
+            {{ __('Deletar conta') }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
+            {{ __('Depois que sua conta for excluída, todos os seus recursos e dados serão excluídos permanentemente.') }}
         </p>
     </header>
 
-    <x-danger-button
-        x-data=""
-        x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
-    >{{ __('Delete Account') }}</x-danger-button>
+    <button class="btn btn-danger w-25" x-data='' @click="$dispatch('showModal')">
+        {{ __('Deletar') }}
+    </button>
 
-    <x-modal name="confirm-user-deletion" :show="$errors->isNotEmpty()" focusable>
+
+
+    {{-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true" name="confirm-user-deletion" focusable>
         <form wire:submit="deleteUser" class="p-6">
 
             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
@@ -50,14 +52,8 @@ $deleteUser = function (Logout $logout) {
             <div class="mt-6">
                 <x-input-label for="password" value="{{ __('Password') }}" class="sr-only" />
 
-                <x-text-input
-                    wire:model.live="password"
-                    id="password"
-                    name="password"
-                    type="password"
-                    class="mt-1 block w-3/4"
-                    placeholder="{{ __('Password') }}"
-                />
+                <x-text-input wire:model.live="password" id="password" name="password" type="password"
+                    class="mt-1 block w-3/4" placeholder="{{ __('Password') }}" />
 
                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
             </div>
@@ -72,5 +68,46 @@ $deleteUser = function (Logout $logout) {
                 </x-danger-button>
             </div>
         </form>
-    </x-modal>
+    </div> --}}
 </section>
+@script
+    <script>
+        $wire.on("showModal", () => {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: "btn btn-danger ms-3",
+                    cancelButton: "btn btn-secondary"
+                },
+                buttonsStyling: false
+            });
+            swalWithBootstrapButtons.fire({
+                title: "Você tem certeza?",
+                text: "Lembrando, essa ação não pode ser desfeita!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Sim, delete!",
+                cancelButtonText: "Não, cancela!",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Deletado!",
+                        text: "Tudo foi excluído.",
+                        icon: "success"
+                    });
+                    $wire.deleteUser();
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Ufaaa!! Foi cancelado.",
+                        text: "Agradecemos por ficar conosco!! :)",
+                        icon: "error",
+
+                    });
+                }
+            });
+        });
+    </script>
+@endscript

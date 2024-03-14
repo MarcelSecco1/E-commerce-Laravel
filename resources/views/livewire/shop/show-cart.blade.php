@@ -60,24 +60,28 @@
         </div>
         <div class="col-md-7 col-lg-8">
             <h4 class="mb-3">Informações necessárias</h4>
-            <form class="needs-validation" novalidate>
+            <form class="needs-validation" novalidate wire:submit.prevent='salvarPessoa'>
                 <div class="row g-3">
                     <div class="col-sm-6">
                         <label for="firstName" class="form-label">Nome</label>
-                        <input type="text" class="form-control" id="firstName" placeholder="" value=""
-                            required>
-                        <div class="invalid-feedback">
-                            Valid first name is required.
-                        </div>
+                        <input type="text" class="form-control" id="firstName" placeholder="" value="" required
+                            wire:model='nome'>
+                        @error('nome')
+                            <div class="text-danger mt-1">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
 
                     <div class="col-sm-6">
                         <label for="lastName" class="form-label">Sobrenome</label>
-                        <input type="text" class="form-control" id="lastName" placeholder="" value=""
-                            required>
-                        <div class="invalid-feedback">
-                            Valid last name is required.
-                        </div>
+                        <input type="text" class="form-control" id="lastName" placeholder="" value="" required
+                            wire:model='sobrenome'>
+                        @error('sobrenome')
+                            <div class="text-danger mt-1">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
 
 
@@ -92,18 +96,24 @@
                     </div> --}}
 
                     <div class="col-12">
-                        <label for="address" class="form-label">Address</label>
-                        <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
-                        <div class="invalid-feedback">
-                            Please enter your shipping address.
-                        </div>
+                        <label for="address" class="form-label">Endereço</label>
+                        <input type="text" class="form-control" id="address" placeholder="1234 Main St" required
+                            wire:model='endereco'>
+                        @error('endereco')
+                            <div class="text-danger mt-1">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
                     <div class="col-md-6">
                         <label for="cpf" class="form-label">CPF</label>
-                        <input type="text" class="form-control" id="cpf" placeholder="000.000.000-00" required>
-                        <div class="invalid-feedback">
-                            Please enter your shipping address.
-                        </div>
+                        <input type="text" class="form-control" id="cpf" placeholder="000.000.000-00" required
+                            wire:model='cpf'>
+                        @error('cpf')
+                            <div class="text-danger mt-1">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
 
                     <div class="col-md-6">
@@ -135,7 +145,7 @@
 
                 </div>
 
-                <hr class="my-4">
+                {{-- <hr class="my-4">
 
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" id="same-address">
@@ -148,9 +158,9 @@
                     <label class="form-check-label" for="save-info">Save this information for next time</label>
                 </div>
 
-                <hr class="my-4">
+                <hr class="my-4"> --}}
 
-                <h4 class="mb-3">Payment</h4>
+                {{-- <h4 class="mb-3">Payment</h4>
 
                 <div class="my-3">
                     <div class="form-check">
@@ -201,11 +211,11 @@
                             Security code required
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
-                <hr class="my-4">
-                <div class="d-flex justify-content-center mb-5">
-                    <button class="w-50 btn btn-primary btn-lg  " type="submit">Continue to checkout</button>
+                {{-- <hr class="my-4"> --}}
+                <div class="d-flex justify-content-center my-5">
+                    <button class="w-50 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
                 </div>
             </form>
         </div>

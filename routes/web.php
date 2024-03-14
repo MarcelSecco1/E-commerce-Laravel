@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\Profiler\Profile;
 Route::get('/', Home::class)->name('home');
 Route::get('/logout', Logout::class)->name('logout');
 Route::get('/shop', AllProducts::class)->name('shop.all-products');
-Route::get('/cart', ShowCart::class)->name('shop.cart')->middleware('auth');
+Route::get('/cart', ShowCart::class)->name('shop.cart');
 
 // Route::view('dashboard', 'dashboard')
 //     ->middleware(['auth', 'verified', 'admin'])

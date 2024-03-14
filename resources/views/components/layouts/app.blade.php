@@ -131,7 +131,6 @@
     </nav>
     <main>
         {{ $slot }}
-
     </main>
 
 
