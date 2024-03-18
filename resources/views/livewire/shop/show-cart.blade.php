@@ -23,7 +23,7 @@
                                 <h6 class="my-0">{{ $product['name'] }}</h6>
                                 <small class="text-body-secondary">x{{ $product['quantity'] }}</small>
                             </div>
-                            <span class="text-body-secondary">R$ {{ $product['price'] }}</span>
+                            <span class="text-body-secondary">R$ {{ $product['price'] * $product['quantity'] }}</span>
                         </li>
                     @endforeach
                     <li class="list-group-item d-flex justify-content-between">
@@ -60,7 +60,7 @@
         </div>
         <div class="col-md-7 col-lg-8">
             <h4 class="mb-3">Informações necessárias</h4>
-            <form class="needs-validation" novalidate wire:submit.prevent='salvarPessoa'>
+            <form class="needs-validation" wire:submit='salvarPessoa'>
                 <div class="row g-3">
                     <div class="col-sm-6">
                         <label for="firstName" class="form-label">Nome</label>
@@ -215,11 +215,14 @@
 
                 {{-- <hr class="my-4"> --}}
                 <div class="d-flex justify-content-center my-5">
-                    <button class="w-50 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+                    <button class="w-50 btn btn-primary btn-lg" type="submit">
+                        Continue to checkout
+                    </button>
                 </div>
             </form>
         </div>
     </div>
+
 </div>
 @script
     <script>
@@ -241,6 +244,20 @@
                         icon: "success"
                     });
                 }
+            });
+        });
+        $wire.on('enviado', ($message) => {
+            Swal.fire({
+                title: "Sucesso!",
+                text: $message,
+                icon: "success"
+            });
+        });
+        $wire.on('error', ($message) => {
+            Swal.fire({
+                title: "Erro!",
+                text: $message,
+                icon: "warning"
             });
         });
     </script>
