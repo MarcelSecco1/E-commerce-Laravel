@@ -2,21 +2,19 @@
 
 namespace App\Livewire\Shop;
 
-use App\Models\Pessoa;
 use Illuminate\Support\Facades\Http;
 use Illuminate\View\View;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 
 class ShowCart extends Component
 {
     public $total = 0;
 
-    #[Validate('required|min:8|max:8|regex:/^\d{8}$/')]
+    #[Validate('required|regex:/^\d{8}$/')]
     public int $cep;
 
     #[Validate('required|min:3|max:255')]
