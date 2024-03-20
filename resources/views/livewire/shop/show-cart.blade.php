@@ -118,8 +118,9 @@
 
                     <div class="col-md-6">
                         <label for="zip" class="form-label">CEP</label>
-                        <input type="number" class="form-control" id="zip" placeholder="15530000" required
-                            wire:model='cep' wire:change="atualizarCep" maxlength="8" minlength="8">
+                        <input type="" id="zip" name="cep" maxlength="8" pattern="[0-9]{8}"
+                            class="form-control" placeholder="15530000" required wire:model.live='cep'
+                            wire:change="atualizarCep">
                         @error('cep')
                             <div class="text-danger mt-1">
                                 {{ $message }}
@@ -230,7 +231,7 @@
             Swal.fire({
                 title: "Você tem certeza?",
                 text: "Essa ação não poderá ser desfeita!",
-                icon: "warning",
+                icon: "info",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
@@ -257,7 +258,7 @@
             Swal.fire({
                 title: "Erro!",
                 text: $message,
-                icon: "warning"
+                icon: "error"
             });
         });
     </script>

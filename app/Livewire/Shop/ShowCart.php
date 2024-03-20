@@ -14,7 +14,7 @@ class ShowCart extends Component
 {
     public $total = 0;
 
-    #[Validate('required|regex:/^\d{8}$/')]
+    #[Validate('required')]
     public int $cep;
 
     #[Validate('required|min:3|max:255')]
@@ -41,7 +41,7 @@ class ShowCart extends Component
     public function atualizarCep(): void
     {
         $this->validate([
-            'cep' => ['required', 'regex:/^\d{8}$/']
+            'cep' => ['required']
         ], [
             'cep.regex' => 'O CEP deve conter exatamente 8 dígitos.'
         ]);
@@ -87,7 +87,10 @@ class ShowCart extends Component
 
     public function salvarPessoa(): void
     {
-
+        if (!auth()->check()) {
+            $this->dispatch('error', 'Erro ao realizar pedido, logue-se para tentar novamente!');
+            return;
+        }
         if (session()->has('cart')) {
             $body = "\nOlá, o cliente " . $this->nome . " " . $this->sobrenome . " acabou de realizar uma compra.\n";
             $body .= "\n🚚 Dados do cliente:\n";
