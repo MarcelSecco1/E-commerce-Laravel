@@ -43,7 +43,8 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function pessoa(){
-        return $this->hasOne(Pessoa::class);
+    public function likes()
+    {
+        return $this->hasMany(LikeProduto::class);
     }
 }

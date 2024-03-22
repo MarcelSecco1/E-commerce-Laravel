@@ -97,6 +97,9 @@
                     {{-- <a class="nav-icon position-relative text-decoration-none" href="#">
                         <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
                     </a> --}}
+                    <a class="nav-icon position-relative text-decoration-none" href="{{ route('list-like') }}">
+                        <i class="fa fa-fw fa-heart text-dark mr-3"></i>
+                    </a>
                     <a class="position-relative nav-icon" href="{{ route('shop.cart') }}">
                         <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
@@ -223,9 +226,9 @@
                 <div class="row pt-2">
                     <div class="col-12">
                         <p class="text-left text-light">
-                            Copyright &copy; 2021 Company Name
-                            | Designed by <a rel="sponsored" href="https://templatemo.com"
-                                target="_blank">TemplateMo</a>
+                            Copyright &copy; 2024
+                            | Desenvolvido por <a rel="sponsored" href="https://github.com/MarcelSecco1"
+                                target="_blank">Marcel Secco</a>
                         </p>
                     </div>
                 </div>

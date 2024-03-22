@@ -9,4 +9,9 @@ class Produto extends Model
 {
     protected $fillable = ['nome', 'preco', 'descricao', 'imagem', 'ativo'];
     use HasFactory;
+
+    public function likes()
+    {
+        return $this->hasMany(LikeProduto::class);
+    }
 }

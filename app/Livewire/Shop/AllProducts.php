@@ -2,14 +2,57 @@
 
 namespace App\Livewire\Shop;
 
+use App\Models\LikeProduto;
+use Livewire\WithPagination;
 use App\Models\Produto;
 use Illuminate\View\View;
 use Livewire\Component;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class AllProducts extends Component
 {
-    public $produtos;
 
+    use WithPagination;
+    public $paginationTheme = 'bootstrap';
+    // public $produtos;f
+    public $colun = 'created_at';
+    public $order = 'desc';
+
+    public function orderBy($value)
+    {
+        switch ($value) {
+            case 'recent':
+                $this->colun = 'created_at';
+                $this->order = 'desc';
+                break;
+            case 'antigo':
+                $this->colun = 'created_at';
+                $this->order = 'asc';
+                break;
+            case 'atoz':
+                $this->colun = 'nome';
+                $this->order = 'asc';
+                break;
+            case 'ztoa':
+                $this->colun = 'nome';
+                $this->order = 'desc';
+                break;
+        }
+        $this->resetPage();
+    }
+    public function likedProduto($id)
+    {
+        if (auth()->guest()) {
+            return redirect()->route('login');
+        }
+        LikeProduto::create([
+            'user_id' => auth()->id(),
+            'produto_id' => $id
+        ]);
+       
+        $this->dispatch('addToCart', 'Produto está na sua lista de curtidos!');
+        return;
+    }
     public function addProductInCart($id): void
     {
 
@@ -51,16 +94,15 @@ class AllProducts extends Component
     }
 
 
-    public function mount(): void
+    public function search()
     {
-        $this->produtos = Produto::all();
+        $this->resetPage();
     }
-
-
-
 
     public function render(): View
     {
-        return view('livewire.shop.all-products');
+        $produtos = Produto::query()->orderBy($this->colun, $this->order)->paginate(12);
+
+        return view('livewire.shop.all-products', compact('produtos'));
     }
 }
