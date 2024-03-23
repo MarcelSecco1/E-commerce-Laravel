@@ -45,16 +45,21 @@ class AllProducts extends Component
         if (auth()->guest()) {
             return redirect()->route('login');
         }
-        LikeProduto::create([
-            'user_id' => auth()->id(),
+        if (auth()->user()->likes()->where('produto_id', $id)->exists()) {
+            $this->dispatch('error', 'O produto já está na sua lista de favoritos!');
+            return;
+        }
+
+        auth()->user()->likes()->create([
             'produto_id' => $id
         ]);
+
 
         $this->dispatch('addToCart', 'Produto está na sua lista de curtidos!');
         return;
     }
 
- 
+
     public function addProductInCart($id): void
     {
 

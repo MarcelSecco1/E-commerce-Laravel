@@ -90,14 +90,11 @@
                             </div>
                         </div>
                     </div>
-                    <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal"
-                        data-bs-target="#templatemo_search">
-                        <i class="fa fa-fw fa-search text-dark mr-2"></i>
-                    </a>
+
                     {{-- <a class="nav-icon position-relative text-decoration-none" href="#">
                         <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
                     </a> --}}
-                    <a class="nav-icon position-relative text-decoration-none" href="{{ route('list-like') }}">
+                    <a class="position-relative nav-icon" href="{{ route('list-like') }}">
                         <i class="fa fa-fw fa-heart text-dark mr-3"></i>
                     </a>
                     <a class="position-relative nav-icon" href="{{ route('shop.cart') }}">

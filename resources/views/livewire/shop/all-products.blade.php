@@ -132,7 +132,7 @@
                                 </div>
                             </div>
                         @endforeach
-                        {{ $produtos->links() }}    
+                        {{ $produtos->links() }}
                     @endif
 
 
@@ -167,6 +167,14 @@
                 title: "Sucesso!",
                 text: $message,
                 icon: "success"
+            });
+        });
+        $wire.on('error', ($message) => {
+            Swal.fire({
+                title: "Atenção!",
+                text: $message,
+                icon: "error",
+                footer: '<a href="/list-like" class="text-decoration-none">Veja seus favoritos!!</a>'
             });
         });
     </script>
