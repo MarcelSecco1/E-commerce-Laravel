@@ -132,7 +132,7 @@
                                 </div>
                             </div>
                         @endforeach
-                        {{ $produtos->links() }}
+                        {{ $produtos->links() }}    
                     @endif
 
 

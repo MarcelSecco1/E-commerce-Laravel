@@ -7,7 +7,7 @@ use Livewire\WithPagination;
 use App\Models\Produto;
 use Illuminate\View\View;
 use Livewire\Component;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Livewire\Attributes\On;
 
 class AllProducts extends Component
 {
@@ -49,10 +49,12 @@ class AllProducts extends Component
             'user_id' => auth()->id(),
             'produto_id' => $id
         ]);
-       
+
         $this->dispatch('addToCart', 'Produto está na sua lista de curtidos!');
         return;
     }
+
+ 
     public function addProductInCart($id): void
     {
 
