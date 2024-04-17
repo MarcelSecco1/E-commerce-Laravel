@@ -2,14 +2,19 @@
 
 namespace App\Livewire\Shop;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Request;
-    
+use MercadoPago\Client\Preference\PreferenceClient;
+use MercadoPago\MercadoPagoConfig;
+use MercadoPago\Exceptions\MPApiException;
+
+
 
 class ShowCart extends Component
 {
@@ -86,13 +91,66 @@ class ShowCart extends Component
         $this->total = 0;
     }
 
-    public function salvarPessoa(): void
+
+    // @return 
+    public function salvarPessoa(): RedirectResponse | null
     {
         if (!auth()->check()) {
             $this->dispatch('error', 'Erro ao realizar pedido, logue-se para tentar novamente!');
-            return;
+            return null;
         }
-    
+
+        if (!session()->has('cart')) {
+            $this->dispatch('error', 'Erro ao realizar pedido, adicione item ao carrinho!');
+            return null;
+        }
+
+
+
+        MercadoPagoConfig::setAccessToken(env('MERCADOPAGO_ACESSTOKEN'));
+        MercadoPagoConfig::setRuntimeEnviroment(MercadoPagoConfig::LOCAL);
+
+        $cart = session()->get('cart');
+
+        $itemsArray = [];
+
+
+        foreach ($cart as $item) {
+            // Cria um array associativo para cada item
+            $itemToArray = [
+                "title" => $item['name'],
+                "quantity" => $item['quantity'],
+                "unit_price" => floatval($item['price']),
+            ];
+
+            $itemsArray[] = $itemToArray;
+        }
+
+
+        try {
+            $client = new PreferenceClient();
+            $preference = $client->create([
+                "back_urls" => [
+                    "success" => "http://localhost:8989",
+                    "failure" => "http://localhost:8989",
+                    // "pending" => "http://localhost:8000/pending"
+                ],
+                "items" => $itemsArray,
+            ]);
+
+           
+            return redirect($preference->sandbox_init_point);
+
+           
+        } catch (MPApiException $e) {
+            echo "Status code: " . $e->getApiResponse()->getStatusCode() . "\n";
+            echo "Content: ";
+            var_dump($e->getApiResponse()->getContent());
+            echo "\n";
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
+
         // if (session()->has('cart')) {
         //     $body = "\nOlá, o cliente " . $this->nome . " " . $this->sobrenome . " acabou de realizar uma compra.\n";
         //     $body .= "\n🚚 Dados do cliente:\n";

@@ -1,0 +1,289 @@
+[1mdiff --git a/.env.example b/.env.example[m
+[1mindex ea0665b..ae310cf 100644[m
+[1m--- a/.env.example[m
+[1m+++ b/.env.example[m
+[36m@@ -2,39 +2,39 @@[m [mAPP_NAME=Laravel[m
+ APP_ENV=local[m
+ APP_KEY=[m
+ APP_DEBUG=true[m
+[31m-APP_URL=http://localhost[m
+[32m+[m[32mAPP_URL=http://localhost:8989[m
+ [m
+ LOG_CHANNEL=stack[m
+ LOG_DEPRECATIONS_CHANNEL=null[m
+ LOG_LEVEL=debug[m
+ [m
+ DB_CONNECTION=mysql[m
+[31m-DB_HOST=127.0.0.1[m
+[32m+[m[32mDB_HOST=db[m
+ DB_PORT=3306[m
+[31m-DB_DATABASE=laravel[m
+[32m+[m[32mDB_DATABASE=e-commerce[m
+ DB_USERNAME=root[m
+[31m-DB_PASSWORD=[m
+[32m+[m[32mDB_PASSWORD=root[m
+ [m
+ BROADCAST_DRIVER=log[m
+ CACHE_DRIVER=file[m
+ FILESYSTEM_DISK=local[m
+[31m-QUEUE_CONNECTION=sync[m
+[31m-SESSION_DRIVER=file[m
+[32m+[m[32mQUEUE_CONNECTION=redis[m
+[32m+[m[32mSESSION_DRIVER=redis[m
+ SESSION_LIFETIME=120[m
+ [m
+ MEMCACHED_HOST=127.0.0.1[m
+ [m
+[31m-REDIS_HOST=127.0.0.1[m
+[32m+[m[32mREDIS_HOST=redis[m
+ REDIS_PASSWORD=null[m
+ REDIS_PORT=6379[m
+ [m
+ MAIL_MAILER=smtp[m
+[31m-MAIL_HOST=mailpit[m
+[32m+[m[32mMAIL_HOST=localhost[m
+ MAIL_PORT=1025[m
+ MAIL_USERNAME=null[m
+ MAIL_PASSWORD=null[m
+ MAIL_ENCRYPTION=null[m
+[31m-MAIL_FROM_ADDRESS="hello@example.com"[m
+[32m+[m[32mMAIL_FROM_ADDRESS="admin@example.com"[m
+ MAIL_FROM_NAME="${APP_NAME}"[m
+ [m
+ AWS_ACCESS_KEY_ID=[m
+[36m@@ -51,9 +51,8 @@[m [mPUSHER_PORT=443[m
+ PUSHER_SCHEME=https[m
+ PUSHER_APP_CLUSTER=mt1[m
+ [m
+[31m-VITE_APP_NAME="${APP_NAME}"[m
+ VITE_PUSHER_APP_KEY="${PUSHER_APP_KEY}"[m
+ VITE_PUSHER_HOST="${PUSHER_HOST}"[m
+ VITE_PUSHER_PORT="${PUSHER_PORT}"[m
+ VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"[m
+[31m-VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"[m
+[32m+[m[32mVITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"[m
+\ No newline at end of file[m
+[1mdiff --git a/app/Livewire/Shop/ShowCart.php b/app/Livewire/Shop/ShowCart.php[m
+[1mindex 0db7fda..055e160 100644[m
+[1m--- a/app/Livewire/Shop/ShowCart.php[m
+[1m+++ b/app/Livewire/Shop/ShowCart.php[m
+[36m@@ -9,6 +9,7 @@[m
+ use Livewire\Attributes\Validate;[m
+ use GuzzleHttp\Client;[m
+ use GuzzleHttp\Psr7\Request;[m
+[32m+[m[41m    [m
+ [m
+ class ShowCart extends Component[m
+ {[m
+[36m@@ -91,50 +92,51 @@[m [mpublic function salvarPessoa(): void[m
+             $this->dispatch('error', 'Erro ao realizar pedido, logue-se para tentar novamente!');[m
+             return;[m
+         }[m
+[31m-        if (session()->has('cart')) {[m
+[31m-            $body = "\nOlá, o cliente " . $this->nome . " " . $this->sobrenome . " acabou de realizar uma compra.\n";[m
+[31m-            $body .= "\n🚚 Dados do cliente:\n";[m
+[31m-            $body .= "Nome: " . $this->nome . " " . $this->sobrenome . "\n";[m
+[31m-            $body .= "CPF: " . $this->cpf . "\n";[m
+[31m-            $body .= "CEP: " . $this->cep . "\n";[m
+[31m-            $body .= "Estado: " . $this->estado . "\n";[m
+[31m-            $body .= "Cidade: " . $this->cidade . "\n";[m
+[31m-            $body .= "Bairro: " . $this->bairro . "\n";[m
+[31m-            $body .= "Rua: " . $this->endereco . "\n\n";[m
+[31m-[m
+[31m-            $body .= "\n🛒  Itens do Pedido:\n";[m
+[31m-            foreach (session('cart') as $item) {[m
+[31m-                $itemTotal = $item['price'] * $item['quantity'];[m
+[31m-                $body .= $item['quantity'] . "x - " . $item['name'] . " - R$" . $itemTotal . "\n";[m
+[31m-            }[m
+[31m-[m
+[31m-            $body .= "\nTotal: *R$" . $this->total . "*";[m
+[31m-[m
+[31m-[m
+[31m-            $params = array([m
+[31m-                'token' => 'wxh3pcrqez0y2low',[m
+[31m-                'to' => '+5517997534057',[m
+[31m-                'body' => $body[m
+[31m-            );[m
+[31m-[m
+[31m-            $client = new Client();[m
+[31m-            $headers = [[m
+[31m-                'Content-Type' => 'application/x-www-form-urlencoded'[m
+[31m-            ];[m
+[31m-            $options = ['form_params' => $params];[m
+[31m-            $request = new Request('POST', 'https://api.ultramsg.com/instance81323/messages/chat', $headers);[m
+[31m-            $res = $client->sendAsync($request, $options)->wait();[m
+[31m-[m
+[31m-            if ($res->getStatusCode() == 200) {[m
+[31m-                $this->dispatch('enviado', 'Pedido realizado com sucesso, entraremos em contato!');[m
+[31m-                $this->limparDados();[m
+[31m-                $this->limparCarrinho();[m
+[31m-            } else {[m
+[31m-                $this->dispatch('error', 'Erro ao realizar pedido, tente novamente!');[m
+[31m-            }[m
+[31m-        } else {[m
+[31m-            $this->dispatch('error', 'Erro ao realizar pedido, seu carrinho está vazio.');[m
+[31m-        }[m
+[32m+[m[41m    [m
+[32m+[m[32m        // if (session()->has('cart')) {[m
+[32m+[m[32m        //     $body = "\nOlá, o cliente " . $this->nome . " " . $this->sobrenome . " acabou de realizar uma compra.\n";[m
+[32m+[m[32m        //     $body .= "\n🚚 Dados do cliente:\n";[m
+[32m+[m[32m        //     $body .= "Nome: " . $this->nome . " " . $this->sobrenome . "\n";[m
+[32m+[m[32m        //     $body .= "CPF: " . $this->cpf . "\n";[m
+[32m+[m[32m        //     $body .= "CEP: " . $this->cep . "\n";[m
+[32m+[m[32m        //     $body .= "Estado: " . $this->estado . "\n";[m
+[32m+[m[32m        //     $body .= "Cidade: " . $this->cidade . "\n";[m
+[32m+[m[32m        //     $body .= "Bairro: " . $this->bairro . "\n";[m
+[32m+[m[32m        //     $body .= "Rua: " . $this->endereco . "\n\n";[m
+[32m+[m
+[32m+[m[32m        //     $body .= "\n🛒  Itens do Pedido:\n";[m
+[32m+[m[32m        //     foreach (session('cart') as $item) {[m
+[32m+[m[32m        //         $itemTotal = $item['price'] * $item['quantity'];[m
+[32m+[m[32m        //         $body .= $item['quantity'] . "x - " . $item['name'] . " - R$" . $itemTotal . "\n";[m
+[32m+[m[32m        //     }[m
+[32m+[m
+[32m+[m[32m        //     $body .= "\nTotal: *R$" . $this->total . "*";[m
+[32m+[m
+[32m+[m
+[32m+[m[32m        //     $params = array([m
+[32m+[m[32m        //         'token' => 'wxh3pcrqez0y2low',[m
+[32m+[m[32m        //         'to' => '+5517997534057',[m
+[32m+[m[32m        //         'body' => $body[m
+[32m+[m[32m        //     );[m
+[32m+[m
+[32m+[m[32m        //     $client = new Client();[m
+[32m+[m[32m        //     $headers = [[m
+[32m+[m[32m        //         'Content-Type' => 'application/x-www-form-urlencoded'[m
+[32m+[m[32m        //     ];[m
+[32m+[m[32m        //     $options = ['form_params' => $params];[m
+[32m+[m[32m        //     $request = new Request('POST', 'https://api.ultramsg.com/instance81323/messages/chat', $headers);[m
+[32m+[m[32m        //     $res = $client->sendAsync($request, $options)->wait();[m
+[32m+[m
+[32m+[m[32m        //     if ($res->getStatusCode() == 200) {[m
+[32m+[m[32m        //         $this->dispatch('enviado', 'Pedido realizado com sucesso, entraremos em contato!');[m
+[32m+[m[32m        //         $this->limparDados();[m
+[32m+[m[32m        //         $this->limparCarrinho();[m
+[32m+[m[32m        //     } else {[m
+[32m+[m[32m        //         $this->dispatch('error', 'Erro ao realizar pedido, tente novamente!');[m
+[32m+[m[32m        //     }[m
+[32m+[m[32m        // } else {[m
+[32m+[m[32m        //     $this->dispatch('error', 'Erro ao realizar pedido, seu carrinho está vazio.');[m
+[32m+[m[32m        // }[m
+     }[m
+ [m
+     public function limparDados()[m
+[1mdiff --git a/app/Models/User.php b/app/Models/User.php[m
+[1mindex a5280d4..58b9036 100644[m
+[1m--- a/app/Models/User.php[m
+[1m+++ b/app/Models/User.php[m
+[36m@@ -47,4 +47,9 @@[m [mpublic function likes()[m
+     {[m
+         return $this->hasMany(LikeProduto::class);[m
+     }[m
+[32m+[m
+[32m+[m[32m    public function pessoa()[m
+[32m+[m[32m    {[m
+[32m+[m[32m        return $this->hasOne(Pessoa::class);[m
+[32m+[m[32m    }[m
+ }[m
+[1mdiff --git a/composer.json b/composer.json[m
+[1mindex 81e9ac2..ecf2c48 100644[m
+[1m--- a/composer.json[m
+[1m+++ b/composer.json[m
+[36m@@ -17,7 +17,8 @@[m
+         "laravel/sanctum": "^3.3",[m
+         "laravel/tinker": "^2.8",[m
+         "livewire/livewire": "^3.4",[m
+[31m-        "livewire/volt": "^1.0"[m
+[32m+[m[32m        "livewire/volt": "^1.0",[m
+[32m+[m[32m        "mercadopago/dx-php": "3.0.4"[m
+     },[m
+     "require-dev": {[m
+         "fakerphp/faker": "^1.9.1",[m
+[1mdiff --git a/composer.lock b/composer.lock[m
+[1mindex 7f9f41a..ad5cb53 100644[m
+[1m--- a/composer.lock[m
+[1m+++ b/composer.lock[m
+[36m@@ -4,7 +4,7 @@[m
+         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",[m
+         "This file is @generated automatically"[m
+     ],[m
+[31m-    "content-hash": "aa61653453a8ab4c5abfc291b1fc2720",[m
+[32m+[m[32m    "content-hash": "40e1c111914eaa7a26a5e37496b80d5f",[m
+     "packages": [[m
+         {[m
+             "name": "anourvalar/eloquent-serialize",[m
+[36m@@ -3652,6 +3652,45 @@[m
+             },[m
+             "time": "2023-05-10T11:58:31+00:00"[m
+         },[m
+[32m+[m[32m        {[m
+[32m+[m[32m            "name": "mercadopago/dx-php",[m
+[32m+[m[32m            "version": "3.0.4",[m
+[32m+[m[32m            "source": {[m
+[32m+[m[32m                "type": "git",[m
+[32m+[m[32m                "url": "https://github.com/mercadopago/sdk-php.git",[m
+[32m+[m[32m                "reference": "119acdfa3ea8c0877a665116c95dde651e61f1bc"[m
+[32m+[m[32m            },[m
+[32m+[m[32m            "dist": {[m
+[32m+[m[32m                "type": "zip",[m
+[32m+[m[32m                "url": "https://api.github.com/repos/mercadopago/sdk-php/zipball/119acdfa3ea8c0877a665116c95dde651e61f1bc",[m
+[32m+[m[32m                "reference": "119acdfa3ea8c0877a665116c95dde651e61f1bc",[m
+[32m+[m[32m                "shasum": ""[m
+[32m+[m[32m            },[m
+[32m+[m[32m            "require": {[m
+[32m+[m[32m                "php": ">=8.2"[m
+[32m+[m[32m            },[m
+[32m+[m[32m            "require-dev": {[m
+[32m+[m[32m                "friendsofphp/php-cs-fixer": "^3.22",[m
+[32m+[m[32m                "phpunit/phpunit": "^10.2",[m
+[32m+[m[32m                "squizlabs/php_codesniffer": "3.*"[m
+[32m+[m[32m            },[m
+[32m+[m[32m            "type": "library",[m
+[32m+[m[32m            "autoload": {[m
+[32m+[m[32m                "psr-4": {[m
+[32m+[m[32m                    "MercadoPago\\": "src/MercadoPago"[m
+[32m+[m[32m                }[m
+[32m+[m[32m            },[m
+[32m+[m[32m            "notification-url": "https://packagist.org/downloads/",[m
+[32m+[m[32m            "license": [[m
+[32m+[m[32m                "MIT"[m
+[32m+[m[32m            ],[m
+[32m+[m[32m            "description": "Mercado Pago PHP SDK",[m
+[32m+[m[32m            "homepage": "https://github.com/mercadopago/sdk-php",[m
+[32m+[m[32m            "support": {[m
+[32m+[m[32m                "source": "https://github.com/mercadopago/sdk-php/tree/3.0.4"[m
+[32m+[m[32m            },[m
+[32m+[m[32m            "time": "2024-03-13T12:12:59+00:00"[m
+[32m+[m[32m        },[m
+         {[m
+             "name": "monolog/monolog",[m
+             "version": "3.5.0",[m
+[1mdiff --git a/database/seeders/DatabaseSeeder.php b/database/seeders/DatabaseSeeder.php[m
+[1mindex d8f933c..647225c 100644[m
+[1m--- a/database/seeders/DatabaseSeeder.php[m
+[1m+++ b/database/seeders/DatabaseSeeder.php[m
+[36m@@ -14,6 +14,8 @@[m [mpublic function run(): void[m
+     {[m
+         // \App\Models\User::factory(10)->create();[m
+         \App\Models\Produto::factory(20)->create();[m
+[32m+[m
+[32m+[m[41m        [m
+         // \App\Models\User::factory()->create([[m
+         //     'name' => 'Test User',[m
+         //     'email' => 'test@example.com',[m
+[1mdiff --git a/resources/views/livewire/shop/show-cart.blade.php b/resources/views/livewire/shop/show-cart.blade.php[m
+[1mindex 37456d9..6b3314e 100644[m
+[1m--- a/resources/views/livewire/shop/show-cart.blade.php[m
+[1m+++ b/resources/views/livewire/shop/show-cart.blade.php[m
+[36m@@ -221,7 +221,11 @@[m [mclass="form-control" placeholder="15530000" required wire:model.live='cep'[m
+                     </button>[m
+                 </div>[m
+             </form>[m
+[32m+[m[32m            <button class="w-50 btn btn-primary btn-lg" wire:click='salvarPessoa'>[m
+[32m+[m[32m                Continue to checkout[m
+[32m+[m[32m            </button>[m
+         </div>[m
+[32m+[m
+     </div>[m
+ [m
+ </div>[m
