@@ -221,7 +221,11 @@
                     </button>
                 </div>
             </form>
+            <button class="w-50 btn btn-primary btn-lg" wire:click='salvarPessoa'>
+                Continue to checkout
+            </button>
         </div>
+
     </div>
 
 </div>
