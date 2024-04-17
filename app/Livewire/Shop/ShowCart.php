@@ -94,12 +94,12 @@ class ShowCart extends Component
 
 
     // @return 
-    public function salvarPessoa(): RedirectResponse | null
+    public function salvarPessoa(): void
     {
 
         if (!auth()->check()) {
             $this->dispatch('error', 'Erro ao realizar pedido, logue-se para tentar novamente!');
-            return null;
+            return;
         }
 
         Pessoa::create([
@@ -114,6 +114,62 @@ class ShowCart extends Component
             'user_id' => auth()->user()->id
         ]);
 
+
+        if (!session()->has('cart')) {
+            $this->dispatch('error', 'Erro ao realizar pedido, adicione item ao carrinho!');
+            return;
+        }
+
+        $this->pagar();
+
+        // if (session()->has('cart')) {
+        //     $body = "\nOlá, o cliente " . $this->nome . " " . $this->sobrenome . " acabou de realizar uma compra.\n";
+        //     $body .= "\n🚚 Dados do cliente:\n";
+        //     $body .= "Nome: " . $this->nome . " " . $this->sobrenome . "\n";
+        //     $body .= "CPF: " . $this->cpf . "\n";
+        //     $body .= "CEP: " . $this->cep . "\n";
+        //     $body .= "Estado: " . $this->estado . "\n";
+        //     $body .= "Cidade: " . $this->cidade . "\n";
+        //     $body .= "Bairro: " . $this->bairro . "\n";
+        //     $body .= "Rua: " . $this->endereco . "\n\n";
+
+        //     $body .= "\n🛒  Itens do Pedido:\n";
+        //     foreach (session('cart') as $item) {
+        //         $itemTotal = $item['price'] * $item['quantity'];
+        //         $body .= $item['quantity'] . "x - " . $item['name'] . " - R$" . $itemTotal . "\n";
+        //     }
+
+        //     $body .= "\nTotal: *R$" . $this->total . "*";
+
+
+        //     $params = array(
+        //         'token' => 'wxh3pcrqez0y2low',
+        //         'to' => '+5517997534057',
+        //         'body' => $body
+        //     );
+
+        //     $client = new Client();
+        //     $headers = [
+        //         'Content-Type' => 'application/x-www-form-urlencoded'
+        //     ];
+        //     $options = ['form_params' => $params];
+        //     $request = new Request('POST', 'https://api.ultramsg.com/instance81323/messages/chat', $headers);
+        //     $res = $client->sendAsync($request, $options)->wait();
+
+        //     if ($res->getStatusCode() == 200) {
+        //         $this->dispatch('enviado', 'Pedido realizado com sucesso, entraremos em contato!');
+        //         $this->limparDados();
+        //         $this->limparCarrinho();
+        //     } else {
+        //         $this->dispatch('error', 'Erro ao realizar pedido, tente novamente!');
+        //     }
+        // } else {
+        //     $this->dispatch('error', 'Erro ao realizar pedido, seu carrinho está vazio.');
+        // }
+    }
+
+    public function pagar()
+    {
 
         if (!session()->has('cart')) {
             $this->dispatch('error', 'Erro ao realizar pedido, adicione item ao carrinho!');
@@ -161,51 +217,6 @@ class ShowCart extends Component
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
-
-        // if (session()->has('cart')) {
-        //     $body = "\nOlá, o cliente " . $this->nome . " " . $this->sobrenome . " acabou de realizar uma compra.\n";
-        //     $body .= "\n🚚 Dados do cliente:\n";
-        //     $body .= "Nome: " . $this->nome . " " . $this->sobrenome . "\n";
-        //     $body .= "CPF: " . $this->cpf . "\n";
-        //     $body .= "CEP: " . $this->cep . "\n";
-        //     $body .= "Estado: " . $this->estado . "\n";
-        //     $body .= "Cidade: " . $this->cidade . "\n";
-        //     $body .= "Bairro: " . $this->bairro . "\n";
-        //     $body .= "Rua: " . $this->endereco . "\n\n";
-
-        //     $body .= "\n🛒  Itens do Pedido:\n";
-        //     foreach (session('cart') as $item) {
-        //         $itemTotal = $item['price'] * $item['quantity'];
-        //         $body .= $item['quantity'] . "x - " . $item['name'] . " - R$" . $itemTotal . "\n";
-        //     }
-
-        //     $body .= "\nTotal: *R$" . $this->total . "*";
-
-
-        //     $params = array(
-        //         'token' => 'wxh3pcrqez0y2low',
-        //         'to' => '+5517997534057',
-        //         'body' => $body
-        //     );
-
-        //     $client = new Client();
-        //     $headers = [
-        //         'Content-Type' => 'application/x-www-form-urlencoded'
-        //     ];
-        //     $options = ['form_params' => $params];
-        //     $request = new Request('POST', 'https://api.ultramsg.com/instance81323/messages/chat', $headers);
-        //     $res = $client->sendAsync($request, $options)->wait();
-
-        //     if ($res->getStatusCode() == 200) {
-        //         $this->dispatch('enviado', 'Pedido realizado com sucesso, entraremos em contato!');
-        //         $this->limparDados();
-        //         $this->limparCarrinho();
-        //     } else {
-        //         $this->dispatch('error', 'Erro ao realizar pedido, tente novamente!');
-        //     }
-        // } else {
-        //     $this->dispatch('error', 'Erro ao realizar pedido, seu carrinho está vazio.');
-        // }
     }
 
     public function limparDados()

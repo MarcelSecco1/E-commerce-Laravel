@@ -63,35 +63,40 @@
                 <div class="alert alert-success" role="alert">
                     Você já possui um cadastro, clique em continuar para finalizar a compra.
                 </div>
-            @endif
-            <h4 class="mb-3">Informações necessárias</h4>
-            <form class="needs-validation" wire:submit='salvarPessoa'>
-                <div class="row g-3">
-                    <div class="col-sm-6">
-                        <label for="firstName" class="form-label">Nome</label>
-                        <input type="text" class="form-control" id="firstName" placeholder="" value="" required
-                            wire:model='nome'>
-                        @error('nome')
-                            <div class="text-danger mt-1">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
+                <div class="d-flex justify-content-center">
+                    <button class="w-50 btn btn-primary btn-lg" wire:click='pagar'>
+                        Continue to checkout
+                    </button>
+                </div>
+            @else
+                <h4 class="mb-3">Informações necessárias</h4>
+                <form class="needs-validation" wire:submit='salvarPessoa'>
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label for="firstName" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="firstName" placeholder="" value=""
+                                required wire:model='nome'>
+                            @error('nome')
+                                <div class="text-danger mt-1">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
 
-                    <div class="col-sm-6">
-                        <label for="lastName" class="form-label">Sobrenome</label>
-                        <input type="text" class="form-control" id="lastName" placeholder="" value="" required
-                            wire:model='sobrenome'>
-                        @error('sobrenome')
-                            <div class="text-danger mt-1">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
+                        <div class="col-sm-6">
+                            <label for="lastName" class="form-label">Sobrenome</label>
+                            <input type="text" class="form-control" id="lastName" placeholder="" value=""
+                                required wire:model='sobrenome'>
+                            @error('sobrenome')
+                                <div class="text-danger mt-1">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
 
 
 
-                    {{-- <div class="col-12">
+                        {{-- <div class="col-12">
                         <label for="email" class="form-label">Email <span
                                 class="text-body-secondary">(Optional)</span></label>
                         <input type="email" class="form-control" id="email" placeholder="you@example.com">
@@ -100,58 +105,59 @@
                         </div>
                     </div> --}}
 
-                    <div class="col-12">
-                        <label for="address" class="form-label">Endereço</label>
-                        <input type="text" class="form-control" id="address" placeholder="1234 Main St" required
-                            wire:model='endereco'>
-                        @error('endereco')
-                            <div class="text-danger mt-1">
-                                {{ $message }}
-                            </div>
-                        @enderror
+                        <div class="col-12">
+                            <label for="address" class="form-label">Endereço</label>
+                            <input type="text" class="form-control" id="address" placeholder="1234 Main St"
+                                required wire:model='endereco'>
+                            @error('endereco')
+                                <div class="text-danger mt-1">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6">
+                            <label for="cpf" class="form-label">CPF</label>
+                            <input type="text" class="form-control" id="cpf" placeholder="000.000.000-00"
+                                required wire:model='cpf'>
+                            @error('cpf')
+                                <div class="text-danger mt-1">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="zip" class="form-label">CEP</label>
+                            <input type="" id="zip" name="cep" maxlength="8" pattern="[0-9]{8}"
+                                class="form-control" placeholder="15530000" required wire:model.live='cep'
+                                wire:change="atualizarCep">
+                            @error('cep')
+                                <div class="text-danger mt-1">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="cidade" class="form-label">Cidade</label>
+                            <input type="text" class="form-control" id="cidade" disabled wire:model.live='cidade'>
+
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="estado" class="form-label">Estado</label>
+                            <input type="text" class="form-control" id="estado" disabled wire:model.live='estado'>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="bairro" class="form-label">Bairro</label>
+                            <input type="text" class="form-control" id="bairro" disabled
+                                wire:model.live='bairro'>
+                        </div>
+
                     </div>
-                    <div class="col-md-6">
-                        <label for="cpf" class="form-label">CPF</label>
-                        <input type="text" class="form-control" id="cpf" placeholder="000.000.000-00" required
-                            wire:model='cpf'>
-                        @error('cpf')
-                            <div class="text-danger mt-1">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
 
-                    <div class="col-md-6">
-                        <label for="zip" class="form-label">CEP</label>
-                        <input type="" id="zip" name="cep" maxlength="8" pattern="[0-9]{8}"
-                            class="form-control" placeholder="15530000" required wire:model.live='cep'
-                            wire:change="atualizarCep">
-                        @error('cep')
-                            <div class="text-danger mt-1">
-                                {{ $message }}
-                            </div>
-                        @enderror
-
-                    </div>
-
-                    <div class="col-md-4">
-                        <label for="cidade" class="form-label">Cidade</label>
-                        <input type="text" class="form-control" id="cidade" disabled wire:model.live='cidade'>
-
-                    </div>
-
-                    <div class="col-md-4">
-                        <label for="estado" class="form-label">Estado</label>
-                        <input type="text" class="form-control" id="estado" disabled wire:model.live='estado'>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="bairro" class="form-label">Bairro</label>
-                        <input type="text" class="form-control" id="bairro" disabled wire:model.live='bairro'>
-                    </div>
-
-                </div>
-
-                {{-- <hr class="my-4">
+                    {{-- <hr class="my-4">
 
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" id="same-address">
@@ -166,7 +172,7 @@
 
                 <hr class="my-4"> --}}
 
-                {{-- <h4 class="mb-3">Payment</h4>
+                    {{-- <h4 class="mb-3">Payment</h4>
 
                 <div class="my-3">
                     <div class="form-check">
@@ -219,16 +225,18 @@
                     </div>
                 </div> --}}
 
-                {{-- <hr class="my-4"> --}}
-                <div class="d-flex justify-content-center my-5">
-                    <button class="w-50 btn btn-primary btn-lg" type="submit">
-                        Continue to checkout
-                    </button>
-                </div>
-            </form>
-            <button class="w-50 btn btn-primary btn-lg" wire:click='salvarPessoa'>
-                Continue to checkout
-            </button>
+                    {{-- <hr class="my-4"> --}}
+                    <div class="d-flex justify-content-center my-5">
+                        <button class="w-50 btn btn-primary btn-lg" type="submit">
+                            Continue to checkout
+                        </button>
+                    </div>
+                </form>
+            @endif
+
+            {{-- <button class="w-50 btn btn-primary btn-lg mt-5" wire:click='salvarPessoa'>
+                Salvar Pessoa
+            </button> --}}
         </div>
 
     </div>
