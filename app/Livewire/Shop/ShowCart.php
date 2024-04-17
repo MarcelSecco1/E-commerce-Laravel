@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Shop;
 
+use App\Models\Pessoa;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Http;
@@ -95,17 +96,29 @@ class ShowCart extends Component
     // @return 
     public function salvarPessoa(): RedirectResponse | null
     {
+
         if (!auth()->check()) {
             $this->dispatch('error', 'Erro ao realizar pedido, logue-se para tentar novamente!');
             return null;
         }
 
+        Pessoa::create([
+            'nome' => $this->nome,
+            'sobrenome' => $this->sobrenome,
+            'cpf' => $this->cpf,
+            'cep' => $this->cep,
+            'estado' => $this->estado,
+            'cidade' => $this->cidade,
+            'bairro' => $this->bairro,
+            'endereco' => $this->endereco,
+            'user_id' => auth()->user()->id
+        ]);
+
+
         if (!session()->has('cart')) {
             $this->dispatch('error', 'Erro ao realizar pedido, adicione item ao carrinho!');
             return null;
         }
-
-
 
         MercadoPagoConfig::setAccessToken(env('MERCADOPAGO_ACESSTOKEN'));
         MercadoPagoConfig::setRuntimeEnviroment(MercadoPagoConfig::LOCAL);
@@ -138,10 +151,8 @@ class ShowCart extends Component
                 "items" => $itemsArray,
             ]);
 
-           
-            return redirect($preference->sandbox_init_point);
 
-           
+            return redirect($preference->sandbox_init_point);
         } catch (MPApiException $e) {
             echo "Status code: " . $e->getApiResponse()->getStatusCode() . "\n";
             echo "Content: ";

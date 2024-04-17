@@ -59,6 +59,11 @@
             @endif
         </div>
         <div class="col-md-7 col-lg-8">
+            @if (auth()->user() && auth()->user()->pessoa)
+                <div class="alert alert-success" role="alert">
+                    Você já possui um cadastro, clique em continuar para finalizar a compra.
+                </div>
+            @endif
             <h4 class="mb-3">Informações necessárias</h4>
             <form class="needs-validation" wire:submit='salvarPessoa'>
                 <div class="row g-3">

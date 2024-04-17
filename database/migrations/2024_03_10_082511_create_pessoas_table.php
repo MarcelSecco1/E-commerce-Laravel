@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('estado');
             $table->integer('cep');
             $table->string('bairro')->nullable();
+            $table->foreignId('user_id')->constrained()->index()->onDelete('cascade');
             $table->timestamps();
         });
     }

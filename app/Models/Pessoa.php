@@ -18,9 +18,11 @@ class Pessoa extends Model
         'estado',
         'cep',
         'bairro',
+        'user_id',
     ];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 }
