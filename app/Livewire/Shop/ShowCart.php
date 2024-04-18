@@ -219,7 +219,7 @@ class ShowCart extends Component
         }
     }
 
-    public function limparDados()
+    public function limparDados(): void
     {
         $this->nome = '';
         $this->sobrenome = '';

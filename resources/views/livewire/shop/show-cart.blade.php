@@ -58,16 +58,45 @@
                 </button>
             @endif
         </div>
-        <div class="col-md-7 col-lg-8">
+        <div class="col-md-7 col-lg-8 mb-5">
             @if (auth()->user() && auth()->user()->pessoa)
-                <div class="alert alert-success" role="alert">
-                    Você já possui um cadastro, clique em continuar para finalizar a compra.
+                <h3 class="text-primary">Minha conta</h3>
+                <div class="card w-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="justify-content-start me-auto">
+                                <p class="fw-bold">
+                                    <i class="bi bi-people text-primary"></i> -
+                                    {{ auth()->user()->pessoa->nome . ' ' . auth()->user()->pessoa->sobrenome }}
+                                </p>
+                                <p>
+                                    <i class="bi bi-geo-alt-fill text-primary"></i>
+                                    -
+                                    {{ auth()->user()->pessoa->endereco .
+                                        ', ' .
+                                        auth()->user()->pessoa->cep .
+                                        ' - ' .
+                                        auth()->user()->pessoa->cidade }}
+
+
+                                </p>
+                            </div>
+                            <div class="justify-content-end">
+                                <button class="btn btn-warning rounded-pill">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-danger rounded-pill"
+                                    wire:click='deletePessoa({{ auth()->user()->pessoa->id }})'>
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="d-flex justify-content-center">
-                    <button class="w-50 btn btn-primary btn-lg" wire:click='pagar'>
-                        Continue to checkout
-                    </button>
-                </div>
+                <button class="w-50 btn btn-primary btn-md mt-3" wire:click='pagar'>
+                    Continuar para Pagamento
+                </button>
             @else
                 <h4 class="mb-3">Informações necessárias</h4>
                 <form class="needs-validation" wire:submit='salvarPessoa'>
@@ -141,13 +170,15 @@
 
                         <div class="col-md-4">
                             <label for="cidade" class="form-label">Cidade</label>
-                            <input type="text" class="form-control" id="cidade" disabled wire:model.live='cidade'>
+                            <input type="text" class="form-control" id="cidade" disabled
+                                wire:model.live='cidade'>
 
                         </div>
 
                         <div class="col-md-4">
                             <label for="estado" class="form-label">Estado</label>
-                            <input type="text" class="form-control" id="estado" disabled wire:model.live='estado'>
+                            <input type="text" class="form-control" id="estado" disabled
+                                wire:model.live='estado'>
                         </div>
                         <div class="col-md-4">
                             <label for="bairro" class="form-label">Bairro</label>
