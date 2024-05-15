@@ -82,9 +82,10 @@
                                 </p>
                             </div>
                             <div class="justify-content-end">
-                                <button class="btn btn-warning rounded-pill">
+                                <a class="btn btn-warning rounded-pill"
+                                    href="{{ route('people.edit', auth()->user()->pessoa->id) }}">
                                     <i class="bi bi-pencil"></i>
-                                </button>
+                                </a>
                                 <button class="btn btn-danger rounded-pill"
                                     wire:click='deletePessoa({{ auth()->user()->pessoa->id }})'>
                                     <i class="bi bi-trash3"></i>
@@ -95,7 +96,7 @@
                     </div>
                 </div>
                 <button class="w-50 btn btn-primary btn-md mt-3" wire:click='pagar'>
-                    Continuar para Pagamento
+                    Finalizar Pagamento
                 </button>
             @else
                 <h4 class="mb-3">Informações necessárias</h4>
@@ -258,8 +259,8 @@
 
                     {{-- <hr class="my-4"> --}}
                     <div class="d-flex justify-content-center my-5">
-                        <button class="w-50 btn btn-primary btn-lg" type="submit">
-                            Continue to checkout
+                        <button class="w-50 btn btn-primary btn-lg" type="submit" wire:loading.attr="disabled">
+                            Salvar Informações
                         </button>
                     </div>
                 </form>

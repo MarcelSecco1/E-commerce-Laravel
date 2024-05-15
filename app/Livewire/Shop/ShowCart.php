@@ -120,8 +120,7 @@ class ShowCart extends Component
             return;
         }
 
-        $this->pagar();
-
+    
         // if (session()->has('cart')) {
         //     $body = "\nOlá, o cliente " . $this->nome . " " . $this->sobrenome . " acabou de realizar uma compra.\n";
         //     $body .= "\n🚚 Dados do cliente:\n";
@@ -229,6 +228,12 @@ class ShowCart extends Component
         $this->cidade = '';
         $this->bairro = '';
         $this->endereco = '';
+    }
+
+    public function deletePessoa($id)
+    {
+        Pessoa::findOrfail($id)->delete();
+        $this->dispatch('enviado', 'Pessoa deletada com sucesso!');
     }
 
     public function render(): View
