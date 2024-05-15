@@ -18,7 +18,7 @@ class permissionToEdit
     {
         $people = Pessoa::findOrFail($request->id);
         if (auth()->user()->id != $people->user_id){
-            return abort(403);
+            return abort(404);
         }
         return $next($request);
     }

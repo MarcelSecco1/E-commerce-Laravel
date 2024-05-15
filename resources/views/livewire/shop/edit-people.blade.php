@@ -105,9 +105,9 @@
                     <button class="w-25 btn btn-primary btn-lg me-1" type="submit" wire:loading.attr="disabled">
                         Salvar
                     </button>
-                    <button class="w-25 btn btn-secondary btn-lg ms-1" type="submit" wire:loading.attr="disabled">
+                    <a class="w-25 btn btn-secondary btn-lg ms-1" href="{{ route('shop.cart') }}">
                         Cancelar
-                    </button>
+                    </a>
                 </div>
             </form>
         </div>

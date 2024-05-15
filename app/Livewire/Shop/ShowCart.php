@@ -120,7 +120,7 @@ class ShowCart extends Component
             return;
         }
 
-    
+
         // if (session()->has('cart')) {
         //     $body = "\nOlá, o cliente " . $this->nome . " " . $this->sobrenome . " acabou de realizar uma compra.\n";
         //     $body .= "\n🚚 Dados do cliente:\n";
