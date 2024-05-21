@@ -125,6 +125,7 @@
                 window.location.href = '/cart';
             })
         });
+       
         $wire.on('error', ($message) => {
             Swal.fire({
                 title: "Erro!",

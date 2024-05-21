@@ -82,12 +82,21 @@
                                         <div
                                             class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                                             <ul class="list-unstyled">
-                                                <li>
-                                                    <span class="btn btn-primary text-white"
-                                                        wire:click='likedProduto({{ $produto->id }})'>
-                                                        <i class="far fa-heart"></i>
-                                                    </span>
-                                                </li>
+                                                @if ($produto->likes()->where('produto_id', $produto->id)->first())
+                                                    <li>
+                                                        <span class="btn btn-primary text-white"
+                                                            wire:click='likedProduto({{ $produto->id }})'>
+                                                            <i class="fa fa-star"></i>
+                                                        </span>
+                                                    </li>
+                                                @else
+                                                    <li>
+                                                        <span class="btn btn-primary text-white"
+                                                            wire:click='likedProduto({{ $produto->id }})'>
+                                                            <i class="far fa-star"></i>
+                                                        </span>
+                                                    </li>
+                                                @endif
                                                 <li><a class="btn btn-primary text-white mt-2"
                                                         href="shop-single.html"><i class="far fa-eye"></i></a></li>
                                                 <li>

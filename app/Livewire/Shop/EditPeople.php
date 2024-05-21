@@ -82,7 +82,7 @@ class EditPeople extends Component
         $this->cidade = '';
     }
     public function editPeople(){
-        $this->validate();
+        // $this->validate();
         $this->people->update([
             'cep' => $this->cep,
             'estado' => $this->estado,

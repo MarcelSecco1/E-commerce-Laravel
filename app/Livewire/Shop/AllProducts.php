@@ -46,7 +46,10 @@ class AllProducts extends Component
             return redirect()->route('login');
         }
         if (auth()->user()->likes()->where('produto_id', $id)->exists()) {
-            $this->dispatch('error', 'O produto já está na sua lista de favoritos!');
+            $produto = (auth()->user()->likes()->where('produto_id', $id)->first());
+            $produto->delete();
+            $this->dispatch('addToCart', 'Produto removido dos seus favoritos!');
+            // $this->dispatch('error', 'O produto já está na sua lista de favoritos!');
             return;
         }
 
@@ -55,7 +58,7 @@ class AllProducts extends Component
         ]);
 
 
-        $this->dispatch('addToCart', 'Produto está na sua lista de curtidos!');
+        $this->dispatch('addToCart', 'Produto está na sua lista de favoritos!');
         return;
     }
 
