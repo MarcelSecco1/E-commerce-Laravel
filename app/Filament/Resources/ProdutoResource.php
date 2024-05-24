@@ -78,6 +78,7 @@ class ProdutoResource extends Resource
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('descricao')
+                    ->limit(50)
                     ->label('Descrição')
                     ->searchable(),
                 TextColumn::make('preco')

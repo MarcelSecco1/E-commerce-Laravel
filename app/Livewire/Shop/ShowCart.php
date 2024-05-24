@@ -72,6 +72,7 @@ class ShowCart extends Component
         }
     }
 
+
     public function mount(): void
     {
         if (session()->has('cart')) {
@@ -81,6 +82,13 @@ class ShowCart extends Component
                 $this->total += $item['price'] * $item['quantity'];
             }
         }
+    }
+
+
+    #[On('applyCodeInCart')]
+    public function applyCodeInCart($discount)
+    {
+        $this->total = $this->total * ($discount / 100);
     }
 
 
@@ -195,7 +203,11 @@ class ShowCart extends Component
         }
 
 
+        $this->dispatch('applyCodeInUser');
+        // dd('ok');
         try {
+
+
             $client = new PreferenceClient();
             $preference = $client->create([
                 "back_urls" => [

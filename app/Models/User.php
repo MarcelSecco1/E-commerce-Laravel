@@ -52,4 +52,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(Pessoa::class);
     }
+
+    public function codes(){
+        return $this->hasMany(CodePromotion::class);
+    }
 }

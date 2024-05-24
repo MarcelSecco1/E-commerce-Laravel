@@ -36,22 +36,14 @@
                     </div>
                 @endif
 
-                {{-- <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
-                    <div class="text-success">
-                        <h6 class="my-0">Promo code</h6>
-                        <small>EXAMPLECODE</small>
-                    </div>
-                    <span class="text-success">−$5</span>
-                </li> --}}
+               
 
             </ul>
 
-            <form class="card p-2">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Promo code">
-                    <button type="submit" class="btn btn-secondary">Redeem</button>
-                </div>
-            </form>
+            <livewire:code-promotion />
+
+
+
             @if (session()->has('cart'))
                 <button class="btn btn-danger w-100 my-3" @click="$dispatch('clearCart')">
                     Limpar carrinho
@@ -171,8 +163,7 @@
 
                         <div class="col-md-4">
                             <label for="cidade" class="form-label">Cidade</label>
-                            <input type="text" class="form-control" id="cidade" disabled
-                                wire:model.live='cidade'>
+                            <input type="text" class="form-control" id="cidade" disabled wire:model.live='cidade'>
 
                         </div>
 
