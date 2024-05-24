@@ -75,6 +75,9 @@ class ShowCart extends Component
 
     public function mount(): void
     {
+        if (session()->has('code_user')) {
+            session()->forget('code_user');
+        }
         if (session()->has('cart')) {
             $cart = session()->get('cart');
 
@@ -180,7 +183,7 @@ class ShowCart extends Component
 
         if (!session()->has('cart')) {
             $this->dispatch('error', 'Erro ao realizar pedido, adicione item ao carrinho!');
-            return null;
+            return;
         }
 
         MercadoPagoConfig::setAccessToken(env('MERCADOPAGO_ACESSTOKEN'));
@@ -189,22 +192,34 @@ class ShowCart extends Component
         $cart = session()->get('cart');
 
         $itemsArray = [];
+        $discount = 0;
 
+        $userId = auth()->user()->id;
+        // dd(session()->get('code_user'));
+        if (session()->has('code_user')) {
+            $code = session()->get('code_user');
+
+            if ($code[$userId]['is_applied'] == 1) {
+                $discount = $code[$userId]['discount'];
+            }
+            session()->forget('code_user');
+        }
+
+        $this->dispatch('applyCodeInUser');
+
+        // exit;
 
         foreach ($cart as $item) {
             // Cria um array associativo para cada item
             $itemToArray = [
                 "title" => $item['name'],
                 "quantity" => $item['quantity'],
-                "unit_price" => floatval($item['price']),
+                "unit_price" => floatval($item['price'] - ($item['price'] * ($discount / 100))),
             ];
 
             $itemsArray[] = $itemToArray;
         }
 
-
-        $this->dispatch('applyCodeInUser');
-        // dd('ok');
         try {
 
 
@@ -242,7 +257,7 @@ class ShowCart extends Component
         $this->endereco = '';
     }
 
-    public function deletePessoa($id)
+    public function deletePessoa($id): void
     {
         Pessoa::findOrfail($id)->delete();
         $this->dispatch('enviado', 'Pessoa deletada com sucesso!');

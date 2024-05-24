@@ -2,12 +2,13 @@
 
 namespace App\Livewire\Shop;
 
-use App\Models\LikeProduto;
+use App\Models\Category;
 use Livewire\WithPagination;
 use App\Models\Produto;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Livewire\Component;
-use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 
 class AllProducts extends Component
 {
@@ -17,8 +18,11 @@ class AllProducts extends Component
     // public $produtos;f
     public $colun = 'created_at';
     public $order = 'desc';
+    #[Url]
+    public $category_id;
+    public $filter;
 
-    public function orderBy($value)
+    public function orderBy($value): void
     {
         switch ($value) {
             case 'recent':
@@ -40,6 +44,7 @@ class AllProducts extends Component
         }
         $this->resetPage();
     }
+
     public function likedProduto($id)
     {
         if (auth()->guest()) {
@@ -103,18 +108,33 @@ class AllProducts extends Component
         $this->dispatch('update', session()->put('cart', $cart));
     }
 
+    public function clearFilter(): void
+    {
+        $this->category_id = 0;
+    }
 
-    
-
-    public function search()
+    public function search(): void
     {
         $this->resetPage();
     }
 
     public function render(): View
     {
-        $produtos = Produto::query()->orderBy($this->colun, $this->order)->paginate(12);
+        $categorias = Category::all();
 
-        return view('livewire.shop.all-products', compact('produtos'));
+        $produtos = Produto::query()
+            ->where('ativo', true)
+            ->orderBy($this->colun, $this->order)
+            ->paginate(12);
+
+        if ($this->category_id) {
+            $produtos = Produto::query()
+                ->where('ativo', true)
+                ->where('category_id', $this->category_id)
+                ->orderBy($this->colun, $this->order)
+                ->paginate(12);
+        }
+
+        return view('livewire.shop.all-products', compact('produtos', 'categorias'));
     }
 }

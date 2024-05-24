@@ -50,7 +50,7 @@ class ListLiked extends Component
         $this->dispatch('update', session()->put('cart', $cart));
     }
 
-    public function remoteToFav($id)
+    public function remoteToFav($id): void
     {
         $like = LikeProduto::where('user_id', auth()->id())
             ->where('produto_id', $id)->first();
@@ -58,7 +58,7 @@ class ListLiked extends Component
         $this->dispatch('addToCart', 'Produto removido dos favoritos!');
     }
 
-    public function removeAllFav()
+    public function removeAllFav(): void
     {
         $userId = auth()->user()->id;
 

@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Illuminate\View\View;
 use Livewire\Component;
 use Livewire\Attributes\On;
 
@@ -11,7 +12,7 @@ class Cart extends Component
     public $quantia = 0;
 
     #[On('update')]
-    public function updateCart()
+    public function updateCart(): void
     {
         if (session()->has('cart')) {
             $this->cart = session()->get('cart');
@@ -29,7 +30,7 @@ class Cart extends Component
         }
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.cart');
     }

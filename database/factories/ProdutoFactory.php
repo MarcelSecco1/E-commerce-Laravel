@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,6 +23,7 @@ class ProdutoFactory extends Factory
             'descricao' => $this->faker->text,
             'imagem' => '01HRE4HSVT3K5D3BRFK3CKE8NY.jpg',
             'ativo' => 1,
+            'category_id' => Category::factory()
 
         ];
     }

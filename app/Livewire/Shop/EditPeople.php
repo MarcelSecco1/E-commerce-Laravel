@@ -5,6 +5,7 @@ namespace App\Livewire\Shop;
 use Livewire\Component;
 use App\Models\Pessoa;
 use Illuminate\Support\Facades\Http;
+use Illuminate\View\View;
 use Livewire\Attributes\Validate;
 
 class EditPeople extends Component
@@ -34,7 +35,7 @@ class EditPeople extends Component
 
     public Pessoa $people;
 
-    public function mount($id)
+    public function mount($id): void
     {
         $this->people = Pessoa::findOrFail($id);
         $this->cep = $this->people->cep;
@@ -81,7 +82,8 @@ class EditPeople extends Component
         $this->estado = '';
         $this->cidade = '';
     }
-    public function editPeople(){
+    public function editPeople(): void
+    {
         // $this->validate();
         $this->people->update([
             'cep' => $this->cep,
@@ -94,12 +96,11 @@ class EditPeople extends Component
             'cpf' => $this->cpf,
         ]);
 
-        
+
         $this->dispatch('enviado', 'Pessoa atualizada com sucesso!');
-       
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.shop.edit-people');
     }

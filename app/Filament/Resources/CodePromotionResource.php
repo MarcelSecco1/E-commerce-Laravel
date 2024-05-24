@@ -40,7 +40,8 @@ class CodePromotionResource extends Resource
                         TextInput::make('discount')
                             ->required()
                             ->integer()
-                            ->label('Desconto em %')
+                            ->suffix('%')
+                            ->label('Desconto')
                             ->minValue(1)
                             ->maxValue(100),
                         TextInput::make('limit_usage_per_user')

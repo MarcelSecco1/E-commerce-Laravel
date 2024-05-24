@@ -27,14 +27,21 @@
                     </li> --}}
                     <li class="pb-3">
                         <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
-                            Product
+                            Categorias
                             <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
                         </a>
-                        <ul id="collapseThree" class="collapse list-unstyled pl-3">
-                            <li><a class="text-decoration-none" href="#">Bag</a></li>
-                            <li><a class="text-decoration-none" href="#">Sweather</a></li>
-                            <li><a class="text-decoration-none" href="#">Sunglass</a></li>
-                        </ul>
+                        @if ($categorias)
+                            <ul id="collapseThree" class="collapse list-unstyled pl-3">
+                                @foreach ($categorias as $categoria)
+                                    <li>
+                                        <a class="text-decoration-none"
+                                            href="{{ route('shop.all-products', ['category_id' => $categoria->id]) }}">
+                                            {{ $categoria->name }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
                     </li>
                 </ul>
             </div>
@@ -56,7 +63,13 @@
                     </div> --}}
                     <div class="col-md-6 pb-4">
                         <div class="d-flex">
-                            <select class="form-control" wire:change='orderBy($event.target.value)'>
+                            @if ($category_id != 0)
+                                <button class="btn btn-secondary btn-sm me-2 w-50" wire:click='clearFilter'>
+                                    <i class="fa fa-window-close" aria-hidden="true"></i>
+                                    Limpar Filtro
+                                </button>
+                            @endif
+                            <select class="form-control" wire:model='filter' wire:change='orderBy($event.target.value)'>
                                 <option value="recent">Ordene pelos mais recentes</option>
                                 <option value="antigo">Ordene pelos mais antigos</option>
                                 <option value="atoz">Ordene de A a Z</option>

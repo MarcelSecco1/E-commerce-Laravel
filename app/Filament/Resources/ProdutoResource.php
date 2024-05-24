@@ -9,6 +9,7 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Resources\Resource;
@@ -44,6 +45,10 @@ class ProdutoResource extends Resource
                             ->numeric()
                             ->mask(RawJs::make('$money($input)'))
                             ->stripCharacters(','),
+                        Select::make('category_id')
+                            ->label('Categoria')
+                            ->relationship('category', 'name')
+                            ->required(),   
                         FileUpload::make('imagem')
                             ->label('Imagem')
                             ->required()
@@ -61,7 +66,7 @@ class ProdutoResource extends Resource
                             ->boolean()
                             ->default(true)
                             ->inline()
-                    ])->columns(2),
+                    ])->columns(3),
 
             ]);
     }

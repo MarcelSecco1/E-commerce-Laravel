@@ -10,8 +10,9 @@ use Livewire\Component;
 
 class CodePromotion extends Component
 {
+
     public String $code;
-    private $codePromotion;
+    public $codePromotion;
 
     public function render()
     {
@@ -20,10 +21,13 @@ class CodePromotion extends Component
 
     public function applyCode()
     {
-        if(!auth()->check()){
+        if (!auth()->check()) {
             return $this->dispatch('error', 'Você precisa estar logado para aplicar um código');
         }
 
+        if (!session()->get('cart')) {
+            return $this->dispatch('error', 'Sem produtos no carrinho!');
+        }
 
         if ($this->code) {
             $this->codePromotion = ModelsCodePromotion::where('code', $this->code)->first();
@@ -32,8 +36,8 @@ class CodePromotion extends Component
                 return $this->dispatch('error', 'Código inválido');
             }
 
+            $user = auth()->user();
             if ($this->codePromotion->limit_usage_per_user > 0) {
-                $user = auth()->user();
 
                 $userCode = UserCode::where('user_id', $user->id)
                     ->where('code_promotions_id', $this->codePromotion->id)
@@ -44,6 +48,13 @@ class CodePromotion extends Component
                     return $this->dispatch('error', 'Você já utilizou o limite de uso desse código');
                 }
             }
+
+            $code_user[$user->id] = [
+                'discount' => $this->codePromotion->discount,
+                'is_applied' => 1,
+            ];
+
+            session()->put('code_user', $code_user);
 
             $this->dispatch('success', 'Código aplicado com sucesso!');
             $this->dispatch('applyCodeInCart', discount: $this->codePromotion->discount);
@@ -57,8 +68,8 @@ class CodePromotion extends Component
             return;
         }
 
+        $user = auth()->user();
         if ($this->codePromotion->limit_usage_per_user > 0) {
-            $user = auth()->user();
 
             $userCode = UserCode::where('user_id', $user->id)
                 ->where('code_promotions_id', $this->codePromotion->id)

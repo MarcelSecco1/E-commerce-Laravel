@@ -95,7 +95,7 @@
                         <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
                     </a> --}}
                     <a class="position-relative nav-icon" href="{{ route('list-like') }}">
-                        <i class="fa fa-fw fa-heart text-dark mr-3"></i>
+                        <i class="fa fa-fw fa-star text-dark mr-1"></i>
                     </a>
                     <a class="position-relative nav-icon" href="{{ route('shop.cart') }}">
                         <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
@@ -171,18 +171,7 @@
                     </ul>
                 </div>
 
-                <div class="col-md-4 pt-5">
-                    <h2 class="h2 text-light border-bottom pb-3 border-light">Products</h2>
-                    <ul class="list-unstyled text-light footer-link-list">
-                        <li><a class="text-decoration-none" href="#">Luxury</a></li>
-                        <li><a class="text-decoration-none" href="#">Sport Wear</a></li>
-                        <li><a class="text-decoration-none" href="#">Men's Shoes</a></li>
-                        <li><a class="text-decoration-none" href="#">Women's Shoes</a></li>
-                        <li><a class="text-decoration-none" href="#">Popular Dress</a></li>
-                        <li><a class="text-decoration-none" href="#">Gym Accessories</a></li>
-                        <li><a class="text-decoration-none" href="#">Sport Shoes</a></li>
-                    </ul>
-                </div>
+                <livewire:footerCategories />
 
                 <div class="col-md-4 pt-5">
                     <h2 class="h2 text-light border-bottom pb-3 border-light">Further Info</h2>
