@@ -34,7 +34,7 @@
                         href="mailto:marcelsecco1@gmail.com">marcelsecco1@gmail.com</a>
                     <i class="fa fa-phone mx-2"></i>
                     <a class="navbar-sm-brand text-light text-decoration-none" href="tel:+5517997534057">+55
-                        (17)99753-4057</a>
+                        (17) 99753-4057</a>
                 </div>
                 <div>
                     <a class="text-light" href="https://www.instagram.com/m.secco99" target="_blank"><i
@@ -161,7 +161,7 @@
                         </li>
                         <li>
                             <i class="fa fa-phone fa-fw"></i>
-                            <a class="text-decoration-none" href="tel:+5517997534057"> +55 (17)99753-4057</a>
+                            <a class="text-decoration-none" href="tel:+5517997534057"> +55 (17) 99753-4057</a>
                         </li>
                         <li>
                             <i class="fa fa-envelope fa-fw"></i>
@@ -189,7 +189,7 @@
                 <div class="col-12 mb-3">
                     <div class="w-100 my-3 border-top border-light"></div>
                 </div>
-                <div class="col-auto me-auto">
+                <div class="col-6 me-auto">
                     <ul class="list-inline text-left footer-icons">
                         <li class="list-inline-item border border-light rounded-circle text-center">
                             <a class="text-light text-decoration-none" target="_blank"
@@ -207,12 +207,17 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-auto">
+                <div class="col-6">
                     <label class="sr-only" for="subscribeEmail">Email address</label>
                     <div class="input-group mb-2">
                         <input type="text" class="form-control bg-dark border-light" id="subscribeEmail"
-                            placeholder="Email address">
-                        <div class="input-group-text btn-primary text-light">Subscribe</div>
+                            placeholder="https://github.com/MarcelSecco1/E-commerce-Laravel">
+                        <a href="https://github.com/MarcelSecco1/E-commerce-Laravel" class="text-decoration-none"
+                            target="_blank">
+                            <div class="input-group-text btn-primary text-light">
+                                Ver Projeto
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
