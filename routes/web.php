@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Livewire\Shop\ShowCart;
 use App\Livewire\Shop\EditPeople;
 use App\Livewire\ListLiked;
+use App\Livewire\Shop\SingleProduct;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 use Termwind\Components\Li;
 
@@ -27,6 +28,8 @@ Route::get('/', Home::class)->name('home');
 Route::get('/logout', Logout::class)->name('logout');
 Route::get('/shop', AllProducts::class)->name('shop.all-products');
 Route::get('/cart', ShowCart::class)->name('shop.cart');
+Route::get('/single-product/{id}', SingleProduct::class)->name('shop.single-product');
+
 
 Route::get('/list-like', ListLiked::class)
     ->name('list-like')
@@ -37,7 +40,7 @@ Route::get('edit/people/{id}', EditPeople::class)
     ->middleware('auth')
     ->middleware('permissionToEdit')
     ->whereNumber('id');
-    
+
 
 // Route::view('dashboard', 'dashboard')
 //     ->middleware(['auth', 'verified', 'admin'])

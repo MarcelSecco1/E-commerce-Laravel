@@ -111,7 +111,8 @@
                                                     </li>
                                                 @endif
                                                 <li><a class="btn btn-primary text-white mt-2"
-                                                        href="shop-single.html"><i class="far fa-eye"></i></a></li>
+                                                        href="{{ route('shop.single-product', $produto->id) }}"><i
+                                                            class="far fa-eye"></i></a></li>
                                                 <li>
                                                     <span class="btn btn-primary text-white mt-2"
                                                         wire:click='addProductInCart({{ $produto->id }})'>

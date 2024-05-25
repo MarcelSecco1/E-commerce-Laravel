@@ -16,12 +16,14 @@
             <div class="col-12 col-md-4 p-5 mt-3">
                 <a href="#"><img src="https://via.placeholder.com/800" class="rounded-circle img-fluid border"></a>
                 <h2 class="h5 text-center mt-3 mb-3">{{ $categories[$i]['name'] }}</h2>
-                <p class="text-center"><a class="btn btn-primary" href="{{ route('shop.all-products') }}">Go Shop</a>
+                <p class="text-center">
+                    <a class="btn btn-primary" href="{{ route('shop.all-products') }}">Go Shop</a>
                 </p>
+            </div>
         @endfor
     </div>
 
 
 
-    </div>
+   
 </section>
