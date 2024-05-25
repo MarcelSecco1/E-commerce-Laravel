@@ -91,7 +91,7 @@ class ShowCart extends Component
     #[On('applyCodeInCart')]
     public function applyCodeInCart($discount)
     {
-        $this->total = $this->total * ($discount / 100);
+        $this->total = $this->total - ($this->total * ($discount / 100));
     }
 
 

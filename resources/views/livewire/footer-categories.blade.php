@@ -1,5 +1,5 @@
 <div class="col-md-4 pt-5">
-    <h2 class="h2 text-light border-bottom pb-3 border-light">Products</h2>
+    <h2 class="h2 text-light border-bottom pb-3 border-light">Categorias de Destaque</h2>
     <ul class="list-unstyled text-light footer-link-list">
         @if ($categories)
             @foreach ($categories as $category)
