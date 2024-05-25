@@ -207,7 +207,6 @@ class ShowCart extends Component
 
         $this->dispatch('applyCodeInUser');
 
-        // exit;
 
         foreach ($cart as $item) {
             // Cria um array associativo para cada item
@@ -235,6 +234,7 @@ class ShowCart extends Component
 
 
             return redirect($preference->sandbox_init_point);
+
         } catch (MPApiException $e) {
             echo "Status code: " . $e->getApiResponse()->getStatusCode() . "\n";
             echo "Content: ";
