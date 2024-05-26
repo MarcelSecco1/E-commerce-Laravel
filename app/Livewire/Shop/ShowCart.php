@@ -186,8 +186,11 @@ class ShowCart extends Component
             return;
         }
 
-        MercadoPagoConfig::setAccessToken(env('MERCADOPAGO_ACESSTOKEN'));
-        MercadoPagoConfig::setRuntimeEnviroment(MercadoPagoConfig::LOCAL);
+        $token = config('mercado-pago.mercado-pago.access_token');
+        $enverionment = config('mercado-pago.mercado-pago.sandbox_mode');
+        dd($token);
+        MercadoPagoConfig::setAccessToken($token);
+        MercadoPagoConfig::setRuntimeEnviroment($enverionment);
 
         $cart = session()->get('cart');
 

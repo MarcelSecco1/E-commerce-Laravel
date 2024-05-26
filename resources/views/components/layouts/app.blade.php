@@ -70,14 +70,18 @@
                             <a class="nav-link" href="{{ route('home') }}">Inicio</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="about.html">Sobre</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('shop.all-products') }}">Produtos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Contato</a>
+                            <a class="nav-link" href="{{ route('list-like') }}">Favoritos</a>
                         </li>
+                        @auth
+                            @if (Auth::user()->is_admin)
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admin">Administrar</a>
+                                </li>
+                            @endif
+                        @endauth
                     </ul>
                 </div>
                 <div class="navbar align-self-center d-flex">
@@ -93,35 +97,29 @@
                     {{-- <a class="nav-icon position-relative text-decoration-none" href="#">
                         <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
                     </a> --}}
-                    <a class="position-relative nav-icon" href="{{ route('list-like') }}">
-                        <i class="fa fa-fw fa-star text-dark mr-1"></i>
-                    </a>
+
                     <a class="position-relative nav-icon" href="{{ route('shop.cart') }}">
                         <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
                             <livewire:cart />
                         </span>
                     </a>
-                    @guest
-                        <a class="nav-icon position-relative text-decoration-none" href="{{ route('register') }}">
-                            <i class="fa fa-fw fa-user text-dark mr-3"></i>
-                        </a>
-                    @endguest
+
                     @auth
                         <a class="nav-icon position-relative text-decoration-none" href="{{ route('profile') }}">
                             <i class="bi bi-person-circle"></i>
                         </a>
-                        @if (Auth::user()->is_admin)
-                            <a class="nav-icon position-relative text-decoration-none" href="/admin">
-                                <i class="bi bi-folder-plus"></i>
-                            </a>
-                        @endif
+
                         <a class="nav-icon position-relative text-decoration-none" href="{{ route('logout') }}">
                             <i class="bi bi-box-arrow-right"></i>
                         </a>
 
                     @endauth
-
+                    @guest
+                        <a class="nav-icon position-relative text-decoration-none" href="{{ route('register') }}">
+                            <i class="fa fa-fw fa-user text-dark mr-3"></i>
+                        </a>
+                    @endguest
 
                 </div>
             </div>
