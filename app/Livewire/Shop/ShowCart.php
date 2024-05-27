@@ -237,12 +237,10 @@ class ShowCart extends Component
 
             
             return redirect($preference->init_point);
-            
+
         } catch (MPApiException $e) {
             // echo "Status code: " . $e->getApiResponse()->getStatusCode() . "\n";
-            echo "Content: ";
-            var_dump($e->getApiResponse()->getContent());
-            echo "\n";
+            echo $e->getMessage();
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
