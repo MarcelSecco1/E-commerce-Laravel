@@ -187,7 +187,7 @@ class ShowCart extends Component
         }
 
         $token = config('mercado-pago.mercado-pago.access_token');
-        $enverionment = MercadoPagoConfig::SERVER;
+        $enverionment = MercadoPagoConfig::LOCAL;
 
         MercadoPagoConfig::setAccessToken($token);
         MercadoPagoConfig::setRuntimeEnviroment($enverionment);
@@ -235,7 +235,6 @@ class ShowCart extends Component
                 "items" => $itemsArray,
             ]);
 
-            dd($preference->init_point);
             return redirect($preference->init_point);
         } catch (\Exception $e) {
             echo $e->getMessage();
