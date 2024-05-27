@@ -235,7 +235,7 @@ class ShowCart extends Component
                 "items" => $itemsArray,
             ]);
 
-            return redirect($preference->init_point);
+            return redirect($preference->sandbox_init_point);
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
