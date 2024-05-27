@@ -22,10 +22,11 @@ class CategoryInHome extends Component
         }
 
 
-
+        $products = [];
         foreach ($categories as $category) {
             $products[] = $category->products()->get();
         }
+
 
 
         return view('livewire.category-in-home', compact('categories', 'products'));

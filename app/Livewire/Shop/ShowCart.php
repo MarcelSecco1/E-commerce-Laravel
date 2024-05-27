@@ -187,8 +187,8 @@ class ShowCart extends Component
         }
 
         $token = config('mercado-pago.mercado-pago.access_token');
-        $enverionment = config('mercado-pago.mercado-pago.sandbox_mode');
-        dd($token);
+        $enverionment = MercadoPagoConfig::SERVER;
+ 
         MercadoPagoConfig::setAccessToken($token);
         MercadoPagoConfig::setRuntimeEnviroment($enverionment);
 
@@ -198,7 +198,7 @@ class ShowCart extends Component
         $discount = 0;
 
         $userId = auth()->user()->id;
-        // dd(session()->get('code_user'));
+       
         if (session()->has('code_user')) {
             $code = session()->get('code_user');
 
@@ -237,7 +237,6 @@ class ShowCart extends Component
 
 
             return redirect($preference->sandbox_init_point);
-
         } catch (MPApiException $e) {
             echo "Status code: " . $e->getApiResponse()->getStatusCode() . "\n";
             echo "Content: ";
@@ -265,6 +264,33 @@ class ShowCart extends Component
         Pessoa::findOrfail($id)->delete();
         $this->dispatch('enviado', 'Pessoa deletada com sucesso!');
     }
+
+    public function modificationQuantity($id, $operation){
+        $cart = session()->get('cart');
+
+        if($operation == 'minus'){
+            if($cart[$id]['quantity'] == 1){
+                unset($cart[$id]);
+            }else{
+                $cart[$id]['quantity'] = $cart[$id]['quantity'] - 1;
+            }
+        }
+
+        if($operation == 'add'){
+            $cart[$id]['quantity'] = $cart[$id]['quantity'] + 1;
+        }
+       
+        session()->put('cart', $cart);
+        $this->total = 0;
+
+        foreach ($cart as $item) {
+            $this->total += $item['price'] * $item['quantity'];
+        }
+        
+        $this->dispatch('update');
+
+    }
+
 
     public function render(): View
     {

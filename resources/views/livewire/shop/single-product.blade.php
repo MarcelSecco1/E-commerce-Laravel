@@ -52,8 +52,18 @@
                             </div>
                             <div class="row pb-3">
                                 <div class="col d-grid">
-                                    <button type="submit" class="btn btn-success btn-lg">Adicionar ao
-                                        carrinho</button>
+                                    <a href="{{ route('shop.all-products') }}" class="btn btn-secondary btn-lg">
+                                        <i class="fa fa-reply" aria-hidden="true"></i>
+
+                                        Voltar para os produtos
+                                    </a>
+                                </div>
+                                <div class="col d-grid">
+
+                                    <button type="submit" class="btn btn-success btn-lg">
+                                        <i class="fa fa-plus-square" aria-hidden="true"></i>
+                                        Adicionar ao carrinho
+                                    </button>
                                 </div>
                             </div>
                         </form>

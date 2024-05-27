@@ -16,12 +16,22 @@
                 </span>
             </h4>
             <ul class="list-group mb-3">
-                @if (session()->has('cart'))
+                @if (session()->has('cart') && count(session()->get('cart')) > 0)
                     @foreach (session()->get('cart') as $product)
                         <li class="list-group-item d-flex justify-content-between lh-sm">
                             <div>
                                 <h6 class="my-0">{{ $product['name'] }}</h6>
                                 <small class="text-body-secondary">x{{ $product['quantity'] }}</small>
+                            </div>
+                            <div class="align-items-center">
+                                <span class="btn btn-secondary btn-sm rounded-circle"
+                                    wire:click='modificationQuantity({{ $product['id'] }}, "add")'>
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                </span>
+                                <span class="btn btn-secondary btn-sm rounded-circle"
+                                    wire:click='modificationQuantity({{ $product['id'] }}, "minus")'>
+                                    <i class="fa fa-minus" aria-hidden="true"></i>
+                                </span>
                             </div>
                             <span class="text-body-secondary">R$ {{ $product['price'] * $product['quantity'] }}</span>
                         </li>
@@ -30,13 +40,13 @@
                         <span>Total (BRL)</span>
                         <strong>R$ {{ $total }}</strong>
                     </li>
-                @else
+                @endif
+                @if (!session()->has('cart') || count(session()->get('cart')) == 0)
                     <div class="alert alert-danger" role="alert">
                         Seu carrinho está vazio!
                     </div>
                 @endif
 
-               
 
             </ul>
 
@@ -44,7 +54,7 @@
 
 
 
-            @if (session()->has('cart'))
+            @if (session()->has('cart') && count(session()->get('cart')) > 0)
                 <button class="btn btn-danger w-100 my-3" @click="$dispatch('clearCart')">
                     Limpar carrinho
                 </button>
@@ -87,9 +97,12 @@
                         </div>
                     </div>
                 </div>
+                {{-- <div class="d-flex justify-content-center "> --}}
+
                 <button class="w-50 btn btn-primary btn-md mt-3" wire:click='pagar'>
                     Finalizar Pagamento
                 </button>
+                {{-- </div> --}}
             @else
                 <h4 class="mb-3">Informações necessárias</h4>
                 <form class="needs-validation" wire:submit='salvarPessoa'>
@@ -163,7 +176,8 @@
 
                         <div class="col-md-4">
                             <label for="cidade" class="form-label">Cidade</label>
-                            <input type="text" class="form-control" id="cidade" disabled wire:model.live='cidade'>
+                            <input type="text" class="form-control" id="cidade" disabled
+                                wire:model.live='cidade'>
 
                         </div>
 
@@ -179,76 +193,6 @@
                         </div>
 
                     </div>
-
-                    {{-- <hr class="my-4">
-
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="same-address">
-                    <label class="form-check-label" for="same-address">Shipping address is the same as my billing
-                        address</label>
-                </div>
-
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="save-info">
-                    <label class="form-check-label" for="save-info">Save this information for next time</label>
-                </div>
-
-                <hr class="my-4"> --}}
-
-                    {{-- <h4 class="mb-3">Payment</h4>
-
-                <div class="my-3">
-                    <div class="form-check">
-                        <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked
-                            required>
-                        <label class="form-check-label" for="credit">Credit card</label>
-                    </div>
-                    <div class="form-check">
-                        <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
-                        <label class="form-check-label" for="debit">Debit card</label>
-                    </div>
-                    <div class="form-check">
-                        <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" required>
-                        <label class="form-check-label" for="paypal">PayPal</label>
-                    </div>
-                </div>
-
-                <div class="row gy-3">
-                    <div class="col-md-6">
-                        <label for="cc-name" class="form-label">Name on card</label>
-                        <input type="text" class="form-control" id="cc-name" placeholder="" required>
-                        <small class="text-body-secondary">Full name as displayed on card</small>
-                        <div class="invalid-feedback">
-                            Name on card is required
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label for="cc-number" class="form-label">Credit card number</label>
-                        <input type="text" class="form-control" id="cc-number" placeholder="" required>
-                        <div class="invalid-feedback">
-                            Credit card number is required
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <label for="cc-expiration" class="form-label">Expiration</label>
-                        <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
-                        <div class="invalid-feedback">
-                            Expiration date required
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <label for="cc-cvv" class="form-label">CVV</label>
-                        <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
-                        <div class="invalid-feedback">
-                            Security code required
-                        </div>
-                    </div>
-                </div> --}}
-
-                    {{-- <hr class="my-4"> --}}
                     <div class="d-flex justify-content-center my-5">
                         <button class="w-50 btn btn-primary btn-lg" type="submit" wire:loading.attr="disabled">
                             Salvar Informações
