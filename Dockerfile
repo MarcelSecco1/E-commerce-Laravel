@@ -41,6 +41,10 @@ RUN pecl install -o -f redis \
 # Set working directory
 WORKDIR /var/www
 
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
+
+RUN install-php-extensions zip
+
 # Copy custom configurations PHP
 COPY docker/php/custom.ini /usr/local/etc/php/conf.d/custom.ini
 
