@@ -19,3 +19,4 @@ artisan
 /.idea
 /.vscode
 /.docker
+docker-compose.yaml
