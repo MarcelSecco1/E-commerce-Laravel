@@ -228,15 +228,15 @@ class ShowCart extends Component
             $client = new PreferenceClient();
             $preference = $client->create([
                 "back_urls" => [
-                    "success" => "http://localhost:8989",
-                    "failure" => "http://localhost:8989",
+                    "success" => route('home'),
+                    "failure" => route('home'),
                     // "pending" => "http://localhost:8000/pending"
                 ],
                 "items" => $itemsArray,
             ]);
 
-
-            return redirect($preference->sandbox_init_point);
+            
+            return redirect($preference->init_point);
         } catch (MPApiException $e) {
             echo "Status code: " . $e->getApiResponse()->getStatusCode() . "\n";
             echo "Content: ";
