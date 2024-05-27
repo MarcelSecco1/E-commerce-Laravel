@@ -175,9 +175,9 @@
                     <h2 class="h2 text-light border-bottom pb-3 border-light">Informações</h2>
                     <ul class="list-unstyled text-light footer-link-list">
                         <li><a class="text-decoration-none" href="/">Inicio</a></li>
-                        <li><a class="text-decoration-none" href="#">Sobre</a></li>
                         <li><a class="text-decoration-none" href="{{ route('shop.all-products') }}">Produtos</a></li>
-                        <li><a class="text-decoration-none" href="#">Contato</a></li>
+                        <li><a class="text-decoration-none" href="{{ route('list-like') }}">Favoritos</a></li>
+                        <li><a class="text-decoration-none" href="{{ route('profile') }}">Perfil</a></li>
                     </ul>
                 </div>
 
